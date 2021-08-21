@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework.viewsets import ModelViewSet
+from users.models import ArrowsUser
+from users.serializers import ArrowsUserModelSerializer
 
-# Create your views here.
+
+class ArrowsUserViewSet(ModelViewSet):
+    serializer_class = ArrowsUserModelSerializer
+    queryset = ArrowsUser.objects.all()
+

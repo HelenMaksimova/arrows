@@ -1,3 +1,4 @@
 from django.contrib import admin
+from users.models import ArrowsUser
 
-# Register your models here.
+admin.site.register(ArrowsUser)
