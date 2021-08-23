@@ -1,4 +1,3 @@
-from django.contrib.auth.hashers import make_password
 from django.core.management.base import BaseCommand
 from users.models import ArrowsUser
 
@@ -6,42 +5,49 @@ from users.models import ArrowsUser
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
-        parser.add_argument('count', type=int)
+        parser.add_argument('count', nargs='?', type=int, default=5)
+        parser.add_argument('-sn', nargs='?', default='django')
+        parser.add_argument('-sp', nargs='?', default='geekbrains')
+        parser.add_argument('-se', nargs='?', default='super@user.com')
+        parser.add_argument('--recreate_su', action='store_true')
 
     def handle(self, *args, **options):
-
         super_user = ArrowsUser.objects.filter(is_superuser=True)
-        if not super_user:
-            self.create_superuser()
-        else:
-            super_user = super_user.first()
-            print(f'superuser {super_user} already exists')
-            user_answer = input(f'delete superuser and create new superuser (y/n): ').lower()
-            if user_answer == 'y':
+        if super_user:
+            if options.get('recreate_su'):
                 super_user.delete()
-                self.create_superuser()
+                self.create_superuser(options.get('sn'),
+                                      options.get('sp'),
+                                      options.get('se'))
+            else:
+                super_user = super_user.first()
+                print(f'superuser {super_user} already exists. For recreate superuser use command with --recreate_su')
+        else:
+            self.create_superuser(options.get('sn'),
+                                  options.get('sp'),
+                                  options.get('se'))
 
         ArrowsUser.objects.filter(is_superuser=False).delete()
+        self.create_users(options.get('count', 5))
+        print('complete')
 
-        for idx in range(options['count']):
-            user = ArrowsUser.objects.create(
+    @staticmethod
+    def create_users(count):
+        for idx in range(count):
+            user = ArrowsUser.objects.create_user(
                 username=f'user_{idx}',
-                password=make_password(f'passtest{idx}'),
+                password=f'passtest{idx}',
                 first_name=f'John_{idx}',
                 last_name=f'Dew_{idx}',
                 email=f'email_{idx}@mail.com')
             print(f'user {user} created')
 
-        print('complete')
-
     @staticmethod
-    def create_superuser():
-        username = input('Ник суперпользователя: ')
-        password = input('Пароль: ')
-        email = input('Email: ')
-        super_user = ArrowsUser.objects.create(
+    def create_superuser(username, password, email):
+        print(username, password, email)
+        super_user = ArrowsUser.objects.create_superuser(
             username=username,
-            password=make_password(password),
+            password=password,
             email=email,
             is_superuser=True,
             is_staff=True)
