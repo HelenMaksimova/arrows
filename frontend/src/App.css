@@ -1,38 +1,81 @@
-.App {
-  text-align: center;
+* {
+    padding: 0;
+    margin: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-style: normal;
+    font-weight: normal;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+a {
+    text-decoration: none;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+ul {
+    list-style-type: none;
 }
 
-.App-link {
-  color: #61dafb;
+.menu {
+    width: 100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: darkslategray;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.menu_list {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.menu_point {
+    font-size: 18px;
+    color: white;
+    font-weight: 700;
+}
+
+.footer {
+    position: fixed;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    background-color: rgb(35, 51, 51);
+}
+
+.us_tab {
+    width: 100%;
+    padding: 20px 50px;
+    margin: 0 auto;
+}
+
+.us_tab_row_h {
+    height: 40px;
+    background-color: lightslategray;
+    font-size: 18px;
+    color: white;
+    font-weight: 700;
+    vertical-align: middle;
+    text-align: center;
+}
+
+
+.us_tab_h {
+    min-width: 200px;
+}
+
+.us_tab_row {
+    font-size: 16px;
+    color:rgb(39, 39, 39);
+    height: 40px;
+    vertical-align: middle;
+    text-align: center;
 }
