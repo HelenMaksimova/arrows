@@ -44,7 +44,6 @@ class Command(BaseCommand):
 
     @staticmethod
     def create_superuser(username, password, email):
-        print(username, password, email)
         super_user = ArrowsUser.objects.create_superuser(
             username=username,
             password=password,
