@@ -3,3 +3,4 @@ python-dotenv
 djangorestframework==3.12.4
 markdown
 django-filter
+django-cors-headers
