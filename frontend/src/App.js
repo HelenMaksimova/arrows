@@ -1,9 +1,12 @@
 import React from 'react';
 import './App.css';
+import axios from "axios";
 import UsersList from "./components/User";
 import MenuList from "./components/Menu";
 import Footer from "./components/Footer";
 
+const apiUrl = 'http://127.0.0.1:8000/api/'
+const apiService = 'users'
 
 class App extends React.Component {
     constructor(props) {
@@ -15,39 +18,8 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        const users = [
-            {
-                'username': 'User',
-                'first_name': 'Name',
-                'last_name': 'Last Name',
-                'email': 'E-mail'
-            },
-            {
-                'username': 'User',
-                'first_name': 'Name',
-                'last_name': 'Last Name',
-                'email': 'E-mail'
-            },
-            {
-                'username': 'User',
-                'first_name': 'Name',
-                'last_name': 'Last Name',
-                'email': 'E-mail'
-            },
-            {
-                'username': 'User',
-                'first_name': 'Name',
-                'last_name': 'Last Name',
-                'email': 'E-mail'
-            },
-            {
-                'username': 'User',
-                'first_name': 'Name',
-                'last_name': 'Last Name',
-                'email': 'E-mail'
-            }
-        ]
 
+        //Данные для меню - пока хард-код
         const menu_points = [
             {
                 'name': 'Menu_point_1'
@@ -66,12 +38,18 @@ class App extends React.Component {
             }
         ]
 
-        this.setState(
-            {
-                'users': users,
-                'menu_points': menu_points
-            }
-        )
+        //подгрузка данных по пользователям из бэк-энда
+        axios.get(apiUrl + apiService + '/')
+            .then(response => {
+                const users = response.data
+                this.setState(
+                    {
+                        'users': users,
+                        'menu_points': menu_points
+                    }
+                )
+            }).catch(error => console.log(error))
+
     }
 
     render() {

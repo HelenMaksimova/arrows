@@ -1,5 +1,7 @@
 import React from 'react';
 
+//Футер вряд ли будет меняться динамически, поэтому просто рендер.
+
 const Footer = () => {
     return (
         <div className="footer">
