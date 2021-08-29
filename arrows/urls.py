@@ -17,9 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from users.views import ArrowsUserViewSet
+from notes.views import NotesViewSet, ProjectsViewSet
 
 router = DefaultRouter()
 router.register('users', ArrowsUserViewSet)
+router.register('notes', NotesViewSet)
+router.register('projects', ProjectsViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
