@@ -8,8 +8,7 @@ class Project(models.Model):
     repository = models.URLField(blank=True, null=True, verbose_name=_('link to repository'))
     users = models.ManyToManyField(ArrowsUser, related_name='projects',
                                    related_query_name='project',
-                                   verbose_name=_('project staff'),
-                                   blank=True, null=True)
+                                   verbose_name=_('project staff'))
     # я бы добавила ещё срок выполнения, кем создан проект, дату создания, дату изменения, статус выполнения.
     # Но в ТЗ пока не указано.
 
@@ -31,6 +30,7 @@ class Note(models.Model):
                                         verbose_name=_('created by'), null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created at'))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_('updated at'))
+    is_active = models.BooleanField(default=True, verbose_name=_('note status'))
 
     class Meta:
         verbose_name = 'Заметка'
