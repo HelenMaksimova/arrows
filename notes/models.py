@@ -5,7 +5,7 @@ from users.models import ArrowsUser
 
 class Project(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('project name'))
-    repository = models.URLField(blank=True, null=True, verbose_name=_('link to repository'))
+    repository = models.URLField(blank=True, verbose_name=_('link to repository'))
     users = models.ManyToManyField(ArrowsUser, related_name='projects',
                                    related_query_name='project',
                                    verbose_name=_('project staff'))
