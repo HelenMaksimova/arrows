@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from notes.models import Project, Note
+from users.serializers import ArrowsUserModelSerializer
 
 # Пока сложно понять, какой именно вывод для связных объектов потребуется, полагаю, либо id, либо весь объект.
 # Но пока что для удобства вывода и ради понимания,как это работает, проставила гиперссылки.
@@ -8,8 +9,8 @@ from notes.models import Project, Note
 
 
 class ProjectModelSerializer(serializers.ModelSerializer):
-    users = serializers.HyperlinkedRelatedField('arrowsuser-detail', many=True, read_only=True)
-    notes = serializers.HyperlinkedRelatedField('note-detail', many=True, read_only=True)
+    users = ArrowsUserModelSerializer(many=True)
+    notes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Project
@@ -17,8 +18,8 @@ class ProjectModelSerializer(serializers.ModelSerializer):
 
 
 class NoteModelSerializer(serializers.ModelSerializer):
-    project = serializers.HyperlinkedRelatedField('project-detail', read_only=True)
-    created_by_user = serializers.HyperlinkedRelatedField('arrowsuser-detail', read_only=True)
+    project = ProjectModelSerializer()
+    created_by_user = ArrowsUserModelSerializer()
 
     class Meta:
         model = Note
