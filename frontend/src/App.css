@@ -10,8 +10,37 @@ body {
     font-weight: normal;
 }
 
-a {
+h1 {
+    color: #00363b;
+    margin: 20px 0;
+    padding: 0 50px;
+}
+
+h3 {
+    color: #00363b;
+    padding: 20px 50px;
+}
+
+p {
+    padding: 0 50px;
+}
+
+a:active, a {
     text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    color: lightgray;
+}
+
+.dark_link, .dark_link:active {
+    text-decoration: none;
+    color: #00262b;
+}
+
+.dark_link:hover {
+    color: lightgray;
 }
 
 ul {
@@ -41,6 +70,7 @@ ul {
 }
 
 .footer {
+    position: fixed;
     display:flex;
     justify-content: center;
     align-items: center;
@@ -77,4 +107,8 @@ ul {
     height: 40px;
     vertical-align: middle;
     text-align: center;
+}
+
+.container {
+    margin-bottom: 100px;
 }
