@@ -23,5 +23,4 @@ const ProjectDetailItem = ({projects, notes}) => {
     );
 }
 
-
 export default ProjectDetailItem;
