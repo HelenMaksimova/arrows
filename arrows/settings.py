@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # 3-d party applications
     'rest_framework',
     'corsheaders',
+    'django_filters',
     # project applications
     'users',
     'notes',

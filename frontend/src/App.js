@@ -70,7 +70,7 @@ class App extends React.Component {
                             <Route exact path='/projects/'
                                    component={() => <ProjectsList projects={this.state.projects}/>}/>
                             <Route exact path='/notes/' component={() => <NotesList notes={this.state.notes}/>}/>
-                            <Route exact path='/projects/:id'>
+                            <Route path='/projects/:id'>
                                 <ProjectDetailItem projects={this.state.projects} notes={this.state.notes}/>
                             </Route>
                             <Route component={() => <NotFound/>}/>

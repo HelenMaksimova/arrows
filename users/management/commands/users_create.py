@@ -35,11 +35,11 @@ class Command(BaseCommand):
     def create_users(count):
         for idx in range(count):
             user = ArrowsUser.objects.create_user(
-                username=f'user_{idx}',
+                username=f'user{idx}',
                 password=f'passtest{idx}',
-                first_name=f'John_{idx}',
-                last_name=f'Dew_{idx}',
-                email=f'email_{idx}@mail.com')
+                first_name=f'John{idx}',
+                last_name=f'Dew{idx}',
+                email=f'email{idx}@mail.com')
             print(f'user {user} created')
 
     @staticmethod
