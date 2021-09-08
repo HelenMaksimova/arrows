@@ -5,3 +5,4 @@ markdown
 django-filter
 django-cors-headers
 djangorestframework-camel-case
+djangorestframework-simplejwt
