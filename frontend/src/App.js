@@ -11,9 +11,11 @@ import NotFound from "./components/NotFound";
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import ProjectDetailItem from "./components/PjojectDetail";
 import LoginForm from "./components/LoginForm";
+import Cookies from "universal-cookie/lib";
 
-const apiUrl = 'http://127.0.0.1:8000/api/'
-const apiServices = ['users', 'projects', 'notes']
+const apiUrl = 'http://127.0.0.1:8000/';
+const apiServices = ['users', 'projects', 'notes'];
+const apiAuth = 'api-token-auth';
 
 class App extends React.Component {
     constructor(props) {
@@ -21,49 +23,67 @@ class App extends React.Component {
         this.state = {
             'users': [],
             'projects': [],
-            'notes': []
+            'notes': [],
+            'token': '',
+            'user': {}
         }
     }
 
-    componentDidMount() {
-
-        axios.get(apiUrl + apiServices[0] + '/')
+    getToken(username, password) {
+        axios.post(apiUrl + apiAuth + '/', {username: username, password: password})
             .then(response => {
-                const users = response.data.results
-                this.setState(
-                    {
-                        'users': users,
-                    }
-                );
-            }).catch(error => console.log(error));
-
-        axios.get(apiUrl + apiServices[1] + '/')
-            .then(response => {
-                const projects = response.data.results
-                this.setState(
-                    {
-                        'projects': projects,
-                    }
-                );
-            }).catch(error => console.log(error));
-
-        axios.get(apiUrl + apiServices[2] + '/')
-            .then(response => {
-                const notes = response.data.results
-                this.setState(
-                    {
-                        'notes': notes,
-                    }
-                );
-            }).catch(error => console.log(error));
-
+                this.setToken(response.data['token'])
+            })
+            .catch(error => alert('Неверный логин или пароль'));
     }
+
+    setToken(token) {
+        const cookies = new Cookies()
+        cookies.set('token', token)
+        this.setState({'token': token})
+    }
+
+    getTokenFromStorage() {
+        const cookies = new Cookies()
+        const token = cookies.get('token')
+        this.setState({'token': token})
+    }
+
+    isAuthenticated() {
+        return this.state.token !== '';
+    }
+
+    logout() {
+        this.setToken('')
+        window.location.reload()
+    }
+
+    loadData() {
+        apiServices.forEach((apiService) => {
+            axios.get(apiUrl + 'api/' + apiService + '/')
+                .then(response => {
+                    const data = response.data.results
+                    this.setState(
+                        {
+                            [apiService]: data
+                        }
+                    );
+                }).catch(error => console.log(error));
+        })
+    }
+
+
+    componentDidMount() {
+        this.getTokenFromStorage();
+        this.loadData();
+    }
+
 
     render() {
         return (
             <div>
                 <BrowserRouter>
-                    <Menu/>
+                    <Menu userIsAuth={this.isAuthenticated.bind(this)} userLogout={this.logout.bind(this)}/>
                     <div className="container">
                         <Switch>
                             <Route exact path='/' component={() => <Index/>}/>
@@ -71,7 +91,8 @@ class App extends React.Component {
                             <Route exact path='/projects/'
                                    component={() => <ProjectsList projects={this.state.projects}/>}/>
                             <Route exact path='/notes/' component={() => <NotesList notes={this.state.notes}/>}/>
-                            <Route exact path='/login/' component={() => <LoginForm/>}/>
+                            <Route exact path='/login/' component={() =>
+                                <LoginForm getToken={(username, password) => this.getToken(username, password)}/>}/>
                             <Route path='/projects/:id'>
                                 <ProjectDetailItem projects={this.state.projects} notes={this.state.notes}/>
                             </Route>
@@ -81,7 +102,7 @@ class App extends React.Component {
                 </BrowserRouter>
                 <Footer/>
             </div>
-        )
+        );
     }
 }
 

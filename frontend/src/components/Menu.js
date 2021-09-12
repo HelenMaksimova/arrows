@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
 
-const Menu = () => {
+const Menu = (props) => {
     return (
         <div className="menu">
             <ul className="menu_list">
@@ -18,7 +18,9 @@ const Menu = () => {
                     <Link to='/notes/'>Заметки</Link>
                 </li>
                 <li className="menu_point">
-                    <Link to='/login/'>Войти</Link>
+                    {props.userIsAuth() ?
+                        <button onClick={props.userLogout}>Выйти</button>:
+                        <Link to='/login/'>Войти</Link>}
                 </li>
             </ul>
         </div>
