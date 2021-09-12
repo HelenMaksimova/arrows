@@ -17,6 +17,9 @@ const Menu = () => {
                 <li className="menu_point">
                     <Link to='/notes/'>Заметки</Link>
                 </li>
+                <li className="menu_point">
+                    <Link to='/login/'>Войти</Link>
+                </li>
             </ul>
         </div>
     );

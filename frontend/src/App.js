@@ -10,6 +10,7 @@ import Index from "./components/Index";
 import NotFound from "./components/NotFound";
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import ProjectDetailItem from "./components/PjojectDetail";
+import LoginForm from "./components/LoginForm";
 
 const apiUrl = 'http://127.0.0.1:8000/api/'
 const apiServices = ['users', 'projects', 'notes']
@@ -70,6 +71,7 @@ class App extends React.Component {
                             <Route exact path='/projects/'
                                    component={() => <ProjectsList projects={this.state.projects}/>}/>
                             <Route exact path='/notes/' component={() => <NotesList notes={this.state.notes}/>}/>
+                            <Route exact path='/login/' component={() => <LoginForm/>}/>
                             <Route path='/projects/:id'>
                                 <ProjectDetailItem projects={this.state.projects} notes={this.state.notes}/>
                             </Route>
