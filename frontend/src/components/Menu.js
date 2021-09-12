@@ -19,7 +19,7 @@ const Menu = (props) => {
                 </li>
                 <li className="menu_point">
                     {props.userIsAuth() ?
-                        <button onClick={props.userLogout}>Выйти</button>:
+                        <button onClick={props.userLogout}> | Выйти</button>:
                         <Link to='/login/'>Войти</Link>}
                 </li>
             </ul>

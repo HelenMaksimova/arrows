@@ -24,15 +24,14 @@ class App extends React.Component {
             'users': [],
             'projects': [],
             'notes': [],
-            'token': '',
-            'user': {}
+            'token': ''
         }
     }
 
     getToken(username, password) {
         axios.post(apiUrl + apiAuth + '/', {username: username, password: password})
             .then(response => {
-                this.setToken(response.data['token'])
+                this.setToken(response.data['token']);
             })
             .catch(error => alert('Неверный логин или пароль'));
     }
@@ -40,13 +39,13 @@ class App extends React.Component {
     setToken(token) {
         const cookies = new Cookies()
         cookies.set('token', token)
-        this.setState({'token': token})
+        this.setState({'token': token}, () => this.loadData())
     }
 
     getTokenFromStorage() {
         const cookies = new Cookies()
         const token = cookies.get('token')
-        this.setState({'token': token})
+        this.setState({'token': token}, () => this.loadData())
     }
 
     isAuthenticated() {
@@ -59,31 +58,46 @@ class App extends React.Component {
     }
 
     loadData() {
+        const headers = this.getHeaders()
         apiServices.forEach((apiService) => {
-            axios.get(apiUrl + 'api/' + apiService + '/')
+            axios.get(apiUrl + 'api/' + apiService + '/', {headers})
                 .then(response => {
-                    const data = response.data.results
                     this.setState(
                         {
-                            [apiService]: data
+                            [apiService]: response.data.results
                         }
                     );
-                }).catch(error => console.log(error));
+                }).catch(error => {
+                console.log(error);
+                this.setState(
+                    {
+                        [apiService]: []
+                    }
+                );
+            });
         })
     }
 
+    getHeaders() {
+        let headers = {
+            'Content-Type': 'application/json'
+        }
+        if (this.isAuthenticated()) {
+            headers['Authorization'] = `Token ${this.state.token}`
+        }
+        return headers
+    }
 
     componentDidMount() {
         this.getTokenFromStorage();
-        this.loadData();
     }
-
 
     render() {
         return (
             <div>
                 <BrowserRouter>
-                    <Menu userIsAuth={this.isAuthenticated.bind(this)} userLogout={this.logout.bind(this)}/>
+                    <Menu userIsAuth={this.isAuthenticated.bind(this)}
+                          userLogout={this.logout.bind(this)}/>
                     <div className="container">
                         <Switch>
                             <Route exact path='/' component={() => <Index/>}/>
