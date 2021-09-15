@@ -1,8 +1,10 @@
 Django==3.1
-python-dotenv
+python-dotenv==0.19.0
 djangorestframework==3.12.4
 markdown
-django-filter
+django-filter==2.4.0
 django-cors-headers
 djangorestframework-camel-case
 djangorestframework-simplejwt
+mixer==7.1.2
+requests==2.26.0

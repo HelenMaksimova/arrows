@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 from users.models import ArrowsUser
 
-admin.site.register(ArrowsUser)
+admin.site.register(ArrowsUser, UserAdmin)
