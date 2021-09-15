@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 from notes.filters import ProjectFilter, NoteFilter
 from notes.models import Project, Note
-from notes.serializers import ProjectModelSerializer, NoteModelSerializer
+from notes.serializers import ProjectModelSerializer, NoteModelSerializer, NoteBaseModelSerializer
 from rest_framework.pagination import LimitOffsetPagination
 
 
@@ -22,6 +22,11 @@ class NotesViewSet(ModelViewSet):
     def perform_destroy(self, instance):
         instance.is_active = False
         instance.save()
+
+    def get_serializer_class(self):
+        if self.request.method in ['GET']:
+            return NoteModelSerializer
+        return NoteBaseModelSerializer
 
 
 class ProjectsViewSet(ModelViewSet):

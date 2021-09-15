@@ -19,3 +19,9 @@ class NoteModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
         fields = '__all__'
+
+
+class NoteBaseModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Note
+        fields = '__all__'
