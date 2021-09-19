@@ -8,3 +8,4 @@ djangorestframework-camel-case
 djangorestframework-simplejwt
 mixer==7.1.2
 requests==2.26.0
+drf-yasg

@@ -23,7 +23,7 @@ class TestProjectsViewSet(TestCase):
             'password': 'geekbrains'
         }
         self.user = get_user_model().objects.create_superuser(**self.user_data)
-        self.client = APIClient()
+        self.api_client = APIClient()
 
     def test_get_list_guest(self):
         request = self.factory.get(self.API_URL)
@@ -42,24 +42,24 @@ class TestProjectsViewSet(TestCase):
 
     def test_get_detail_project(self):
         project = mixer.blend(Project)
-        self.client.force_authenticate(self.user)
-        response = self.client.get(f'{self.API_URL}{project.id}/')
+        self.api_client.force_authenticate(self.user)
+        response = self.api_client.get(f'{self.API_URL}{project.id}/')
         print('\nget_detail_project', response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_update_project(self):
         project = mixer.blend(Project)
         print('\nupdate_project', project.name)
-        self.client.force_authenticate(self.user)
-        response = self.client.put(f'{self.API_URL}{project.id}/', {'name': 'new_project'})
+        self.api_client.force_authenticate(self.user)
+        response = self.api_client.put(f'{self.API_URL}{project.id}/', {'name': 'new_project'})
         print('\nupdate_project', response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_delete_project(self):
         projects = mixer.cycle().blend(Project)
         print('\ndelete_project', Project.objects.all())
-        self.client.force_authenticate(self.user)
-        self.client.delete(f'{self.API_URL}{projects[-1].id}/')
+        self.api_client.force_authenticate(self.user)
+        self.api_client.delete(f'{self.API_URL}{projects[-1].id}/')
         print('\ndelete_project', Project.objects.all())
         self.assertEqual(len(projects) - 1, len(Project.objects.all()))
 
