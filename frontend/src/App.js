@@ -15,7 +15,7 @@ import Cookies from "universal-cookie/lib";
 
 const apiUrl = 'http://127.0.0.1:8000/';
 const apiServices = ['users', 'projects', 'notes'];
-const apiAuth = 'api-token-auth';
+const apiAuth = 'api/token-auth';
 
 class App extends React.Component {
     constructor(props) {
