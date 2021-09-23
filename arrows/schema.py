@@ -56,7 +56,7 @@ class Query(graphene.ObjectType):
 
     def resolve_projects_by_user(self, info, pk):
         user = ArrowsUser.objects.filter(pk=pk).first()
-        result = [project for project in Project.objects.all() if user in project.users.all()]
+        result = user.projects.all()
         return result
 
     def resolve_user_by_username(self, username):
