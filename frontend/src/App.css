@@ -166,3 +166,10 @@ ul {
     color: white;
     font-weight: 700;
 }
+
+.text_button_dark {
+    border-style: none;
+    background: none;
+    font-size: 14px;
+    color: #00262b;
+}

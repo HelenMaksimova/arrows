@@ -1,16 +1,19 @@
 from rest_framework.viewsets import ModelViewSet
 from notes.filters import ProjectFilter, NoteFilter
 from notes.models import Project, Note
-from notes.serializers import ProjectModelSerializer, NoteModelSerializer, NoteBaseModelSerializer
+from notes.serializers import (ProjectModelSerializer,
+                               NoteModelSerializer,
+                               NoteBaseModelSerializer,
+                               ProjectBaseModelSerializer)
 from rest_framework.pagination import LimitOffsetPagination
 
 
 class NotesLimitOffsetPagination(LimitOffsetPagination):
-    default_limit = 20
+    default_limit = 40
 
 
 class ProjectLimitOffsetPagination(LimitOffsetPagination):
-    default_limit = 10
+    default_limit = 30
 
 
 class NotesViewSet(ModelViewSet):
@@ -34,3 +37,8 @@ class ProjectsViewSet(ModelViewSet):
     queryset = Project.objects.all()
     pagination_class = ProjectLimitOffsetPagination
     filterset_class = ProjectFilter
+
+    def get_serializer_class(self):
+        if self.request.method in ['GET']:
+            return ProjectModelSerializer
+        return ProjectBaseModelSerializer

@@ -15,7 +15,7 @@ const ProjectDetailItem = ({projects, notes}) => {
                 <p>
                     {(projectItem.repository === '') ? 'Ссылка не указана' :
                         <a href={projectItem.repository} className="dark_link"
-                           target="_blank">{projectItem.repository}</a>}
+                           target="_blank" rel="noreferrer">{projectItem.repository}</a>}
                 </p>
                 <h3>Участники:</h3>
                 <UsersList users={projectItem.users}/>

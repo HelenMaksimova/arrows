@@ -12,6 +12,8 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import ProjectDetailItem from "./components/PjojectDetail";
 import LoginForm from "./components/LoginForm";
 import Cookies from "universal-cookie/lib";
+import CreateProjectForm from "./components/CreateProjectForm";
+import CreateNoteForm from "./components/CreateNoteForm";
 
 const apiUrl = 'http://127.0.0.1:8000/';
 const apiServices = ['users', 'projects', 'notes'];
@@ -24,15 +26,12 @@ class App extends React.Component {
             'users': [],
             'projects': [],
             'notes': [],
-            'token': '',
-            'currentUsername': '',
-            'currentUserFullname': ''
+            'token': ''
         }
-    }
-
-    getCurrentUserFullname(username, users) {
-        const user = users.find(user => user.username === username)
-        return `${user.firstName} ${user.lastName}`
+        this.deleteProject = this.deleteProject.bind(this)
+        this.createProject = this.createProject.bind(this)
+        this.createNote = this.createNote.bind(this)
+        this.deleteNote = this.deleteNote.bind(this)
     }
 
     getToken(username, password) {
@@ -43,16 +42,16 @@ class App extends React.Component {
             .catch(error => alert('Неверный логин или пароль'));
     }
 
-    setToken(token, username) {
-        const cookies = new Cookies()
-        cookies.set('token', token)
-        this.setState({'token': token, 'currentUsername': username}, () => this.loadData())
+    setToken(token) {
+        const cookies = new Cookies();
+        cookies.set('token', token);
+        this.setState({'token': token}, () => this.loadData());
     }
 
     getTokenFromStorage() {
         const cookies = new Cookies()
         const token = cookies.get('token')
-        this.setState({'token': token}, () => this.loadData())
+        this.setState({'token': token}, () => this.loadData());
     }
 
     isAuthenticated() {
@@ -60,29 +59,15 @@ class App extends React.Component {
     }
 
     logout() {
-        this.setToken('', '')
-        this.setState({'currentUserFullname': ''})
-        window.location.reload()
+        this.setToken('');
     }
 
     loadData() {
-        const headers = this.getHeaders()
-        let data;
+        const headers = this.getHeaders();
         apiServices.forEach((apiService) => {
             axios.get(apiUrl + 'api/' + apiService + '/', {headers})
                 .then(response => {
-                    if (apiService === 'users' && this.state.currentUserFullname === '') {
-                        data = {
-                            [apiService]: response.data.results,
-                            'currentUserFullname':
-                                this.getCurrentUserFullname(this.state.currentUsername, response.data.results)
-                        }
-                    } else {
-                        data = {[apiService]: response.data.results}
-                    }
-                    this.setState(
-                        data
-                    );
+                    this.setState({[apiService]: response.data.results});
                 }).catch(error => {
                 console.log(error);
                 this.setState(
@@ -108,22 +93,81 @@ class App extends React.Component {
         this.getTokenFromStorage();
     }
 
+    deleteProject(id) {
+        const headers = this.getHeaders()
+        axios
+            .delete(apiUrl + 'api/' + apiServices[1] + `/${id}/`, {headers})
+            .then(() => {
+                this.setState({'projects': this.state.projects.filter(project => project.id !== id)})
+                this.setState({'notes': this.state.notes.filter(note => note.project.id !== id)})
+            })
+            .catch(error => console.log(error))
+    }
+
+    deleteNote(id) {
+        const headers = this.getHeaders()
+        axios
+            .delete(apiUrl + 'api/' + apiServices[2] + `/${id}/`, {headers})
+            .then(() => {
+                this.setState({'notes': this.state.notes.filter(note => note.id !== id)})
+            })
+            .catch(error => console.log(error))
+    }
+
+    createProject(project) {
+        const headers = this.getHeaders()
+        axios
+            .post(apiUrl + 'api/' + apiServices[1] + '/', project, {headers})
+            .then((response) => {
+                let projectData = {
+                    ...response.data,
+                    users: response.data.users.map(id => this.state.users.find(user => user.id === id))
+                };
+                this.setState({'projects': [...this.state.projects, projectData]})
+            })
+            .catch(error => console.log(error))
+    }
+
+    createNote(note) {
+        const headers = this.getHeaders()
+        axios
+            .post(apiUrl + 'api/' + apiServices[2] + '/', note, {headers})
+            .then((response) => {
+                console.log(response.data)
+                let noteData = {
+                    ...response.data,
+                    project: this.state.projects.find(project => project.id === response.data.project),
+                    createdByUser: this.state.users.find(user => user.id === response.data.project)
+                };
+                this.setState({'notes': [...this.state.notes, noteData]})
+            })
+            .catch(error => console.log(error))
+    }
+
     render() {
         return (
             <div>
                 <BrowserRouter>
                     <Menu userIsAuth={this.isAuthenticated.bind(this)}
-                          userLogout={this.logout.bind(this)}
-                          username={this.state.currentUserFullname}/>
+                          userLogout={this.logout.bind(this)}/>
                     <div className="container">
                         <Switch>
                             <Route exact path='/' component={() => <Index/>}/>
                             <Route exact path='/users/' component={() => <UsersList users={this.state.users}/>}/>
                             <Route exact path='/projects/'
-                                   component={() => <ProjectsList projects={this.state.projects}/>}/>
-                            <Route exact path='/notes/' component={() => <NotesList notes={this.state.notes}/>}/>
+                                   component={() => <ProjectsList deleteProject={this.deleteProject}
+                                                                  projects={this.state.projects}/>}/>
+                            <Route exact path='/notes/' component={() => <NotesList deleteNote={this.deleteNote}
+                                                                                    notes={this.state.notes}/>}/>
                             <Route exact path='/login/' component={() =>
                                 <LoginForm getToken={(username, password) => this.getToken(username, password)}/>}/>
+                            <Route exact path='/projects/create/'>
+                                <CreateProjectForm createProject={this.createProject} users={this.state.users}/>
+                            </Route>
+                            <Route exact path='/notes/create/'>
+                                <CreateNoteForm createNote={this.createNote} users={this.state.users}
+                                                projects={this.state.projects}/>
+                            </Route>
                             <Route path='/projects/:id'>
                                 <ProjectDetailItem projects={this.state.projects} notes={this.state.notes}/>
                             </Route>
