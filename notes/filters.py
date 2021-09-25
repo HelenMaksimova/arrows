@@ -15,4 +15,4 @@ class NoteFilter(filters.FilterSet):
 
     class Meta:
         model = Note
-        fields = ['project', 'created_at']
+        fields = ['project', 'created_at', 'is_active']

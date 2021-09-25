@@ -64,8 +64,12 @@ class App extends React.Component {
 
     loadData() {
         const headers = this.getHeaders();
+        const params = '?is_active=true'
         apiServices.forEach((apiService) => {
-            axios.get(apiUrl + 'api/' + apiService + '/', {headers})
+            let apiServiceUrl = (apiService === 'notes')
+                ? apiUrl + 'api/' + apiService + '/' + params
+                : apiUrl + 'api/' + apiService + '/'
+            axios.get(apiServiceUrl, {headers})
                 .then(response => {
                     this.setState({[apiService]: response.data.results});
                 }).catch(error => {

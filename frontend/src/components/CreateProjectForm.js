@@ -33,7 +33,7 @@ const CreateProjectForm = ({createProject, users}) => {
             />
             <p>Выберите участников:</p>
             <select multiple="multiple" onChange={selectChange}>
-                {users.map(user => <option value={user.id}>{`${user.firstName} ${user.lastName}`}</option>)}
+                {users.map(user => <option key={user.id} value={user.id}>{`${user.firstName} ${user.lastName}`}</option>)}
             </select>
             <button onClick={addProject}>Создать</button>
         </form>
