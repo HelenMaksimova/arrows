@@ -38,7 +38,8 @@ const NotesList = ({notes, deleteNote}) => {
             <tr>
                 <td style={{textAlign: 'center'}}>
                     <div style={{margin: '10px 0', fontSize: '18px'}}>
-                        <Link to='/notes/create/' className="dark_link">Создать заметку</Link>
+                        <Link style={{textDecoration: 'underline'}}
+                              to='/notes/create/' className="dark_link">Создать заметку</Link>
                     </div>
                 </td>
             </tr>

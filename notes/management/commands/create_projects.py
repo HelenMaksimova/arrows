@@ -22,3 +22,5 @@ class Command(BaseCommand):
             )
             for user in users_set:
                 project.users.add(user)
+            print(f'Project with id {project.id} created')
+        print('Complete')

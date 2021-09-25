@@ -15,8 +15,10 @@ class Command(BaseCommand):
             project = choice(Project.objects.all())
             user = choice(ArrowsUser.objects.all())
             text = 'text-text-text-' * randint(1, 20)
-            Note.objects.create(
+            note = Note.objects.create(
                 project=project,
                 text=text,
                 created_by_user=user
             )
+            print(f'Note with id {note.id} created')
+        print('Complete')

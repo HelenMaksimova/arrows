@@ -47,6 +47,8 @@ class Command(BaseCommand):
         super_user = ArrowsUser.objects.create_superuser(
             username=username,
             password=password,
+            first_name='Django',
+            last_name='Django',
             email=email,
             is_superuser=True,
             is_staff=True)

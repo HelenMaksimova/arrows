@@ -1,9 +1,9 @@
 import React from "react";
-import {useParams} from 'react-router-dom'
+import {useParams, Link} from 'react-router-dom'
 import UsersList from "./User";
 import NotesList from "./Note";
 
-const ProjectDetailItem = ({projects, notes}) => {
+const ProjectDetailItem = ({projects, notes, deleteNote}) => {
     let {id} = useParams();
     if (projects.length !== 0) {
         let projectItem = projects.find(item => item.id === +id)
@@ -11,6 +11,11 @@ const ProjectDetailItem = ({projects, notes}) => {
         return (
             <div>
                 <h1>{projectItem.name}</h1>
+                <Link
+                    style={{padding: '0 50px', fontSize: '18px', textDecoration: 'underline'}}
+                    className="dark_link" to={`/projects/update/${id}`}>
+                    Редактировать
+                </Link>
                 <h3>Репозиторий:</h3>
                 <p>
                     {(projectItem.repository === '') ? 'Ссылка не указана' :
@@ -20,7 +25,7 @@ const ProjectDetailItem = ({projects, notes}) => {
                 <h3>Участники:</h3>
                 <UsersList users={projectItem.users}/>
                 <h3>Заметки:</h3>
-                <NotesList notes={notesFiltered}/>
+                <NotesList notes={notesFiltered} deleteNote={deleteNote}/>
             </div>
         );
     }

@@ -45,14 +45,15 @@ const ProjectsList = ({projects, deleteProject}) => {
                     <th className="us_tab_h">Репозиторий</th>
                     <th className="us_tab_h">Участники</th>
                     <th className="us_tab_h">Заметки</th>
-                    <th> </th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td style={{textAlign: 'center'}}>
                         <div style={{margin: '10px 0', fontSize: '18px'}}>
-                            <Link to='/projects/create/' className="dark_link">Создать проект</Link>
+                            <Link style={{textDecoration: 'underline'}}
+                                  to='/projects/create/' className="dark_link">Создать проект</Link>
                         </div>
                     </td>
                 </tr>
@@ -60,7 +61,10 @@ const ProjectsList = ({projects, deleteProject}) => {
                     filteredProjects.map((project) => <ProjectItem key={project.id} project={project}
                                                                    deleteProject={deleteProject}/>)
                     :
-                    <h2 style={{textAlign: 'center'}}>Проекты не найдены</h2>}
+                    <tr>
+                        <td><h2 style={{textAlign: 'center'}}>Проекты не найдены</h2></td>
+                    </tr>}
+
 
                 </tbody>
             </table>

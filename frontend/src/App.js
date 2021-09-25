@@ -8,12 +8,13 @@ import ProjectsList from "./components/Project";
 import NotesList from "./components/Note";
 import Index from "./components/Index";
 import NotFound from "./components/NotFound";
-import {BrowserRouter, Route, Switch} from 'react-router-dom'
+import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom'
 import ProjectDetailItem from "./components/PjojectDetail";
 import LoginForm from "./components/LoginForm";
 import Cookies from "universal-cookie/lib";
 import CreateProjectForm from "./components/CreateProjectForm";
 import CreateNoteForm from "./components/CreateNoteForm";
+import ProjectUpdateForm from "./components/ProjectUpdateForm";
 
 const apiUrl = 'http://127.0.0.1:8000/';
 const apiServices = ['users', 'projects', 'notes'];
@@ -32,6 +33,7 @@ class App extends React.Component {
         this.createProject = this.createProject.bind(this)
         this.createNote = this.createNote.bind(this)
         this.deleteNote = this.deleteNote.bind(this)
+        this.updateProject = this.updateProject.bind(this)
     }
 
     getToken(username, password) {
@@ -137,13 +139,23 @@ class App extends React.Component {
         axios
             .post(apiUrl + 'api/' + apiServices[2] + '/', note, {headers})
             .then((response) => {
-                console.log(response.data)
                 let noteData = {
                     ...response.data,
                     project: this.state.projects.find(project => project.id === response.data.project),
                     createdByUser: this.state.users.find(user => user.id === response.data.project)
                 };
                 this.setState({'notes': [...this.state.notes, noteData]})
+            })
+            .catch(error => console.log(error))
+    }
+
+    updateProject(project) {
+        const headers = this.getHeaders()
+        axios
+            .patch(apiUrl + 'api/' + apiServices[1] + `/${project.id}/`, project, {headers})
+            .then((response) => {
+                console.log(response.data)
+                this.loadData()
             })
             .catch(error => console.log(error))
     }
@@ -172,8 +184,19 @@ class App extends React.Component {
                                 <CreateNoteForm createNote={this.createNote} users={this.state.users}
                                                 projects={this.state.projects}/>
                             </Route>
+                            <Route path='/projects/update/:id'>
+                                <ProjectUpdateForm
+                                    users={this.state.users}
+                                    projects = {this.state.projects}
+                                    updateProject={this.updateProject}
+                                />
+                            </Route>
                             <Route path='/projects/:id'>
-                                <ProjectDetailItem projects={this.state.projects} notes={this.state.notes}/>
+                                <ProjectDetailItem
+                                    projects={this.state.projects}
+                                    notes={this.state.notes}
+                                    deleteNote={this.deleteNote}
+                                    updateProject={this.updateProject}/>
                             </Route>
                             <Route component={() => <NotFound/>}/>
                         </Switch>

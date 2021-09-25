@@ -1,13 +1,16 @@
 import React, {useState} from 'react';
 import classes from './CreateProjectForm.module.css'
+import {useHistory} from "react-router-dom";
 
 const CreateProjectForm = ({createProject, users}) => {
 
     const [project, setProject] = useState({name: '', repository: '', users: [], notes: []});
+    const history = useHistory();
 
     const addProject = (e) => {
         e.preventDefault();
         createProject(project);
+        history.push('/projects/')
     }
 
     const selectChange = (e) => {
