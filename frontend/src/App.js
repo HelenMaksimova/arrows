@@ -16,7 +16,7 @@ import CreateProjectForm from "./components/CreateProjectForm";
 import CreateNoteForm from "./components/CreateNoteForm";
 import ProjectUpdateForm from "./components/ProjectUpdateForm";
 
-const apiUrl = 'http://127.0.0.1:8000/';
+const apiUrl = 'http://80.78.246.127:8000/';
 const apiServices = ['users', 'projects', 'notes'];
 const apiAuth = 'api/token-auth';
 
