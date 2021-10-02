@@ -11,3 +11,4 @@ requests
 drf-yasg
 graphene
 graphene-django
+psycopg2-binary
