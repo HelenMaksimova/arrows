@@ -11,4 +11,4 @@ class ArrowsUser(AbstractUser):
         verbose_name_plural = 'Пользователи'
 
     def __str__(self):
-        return f'{self.username}_id{self.id}'
+        return f'{self.username}_{self.id}'

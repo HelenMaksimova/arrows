@@ -1,14 +1,9 @@
 from rest_framework.viewsets import GenericViewSet
 from rest_framework import mixins
 from users.models import ArrowsUser
-from users.serializers import ArrowsUserModelSerializer, ArrowsUserWideModelSerializer
+from users.serializers import ArrowsUserModelSerializer
 
 
 class ArrowsUserViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, GenericViewSet):
     queryset = ArrowsUser.objects.all()
-
-    def get_serializer_class(self):
-        if self.request.version == '0.2':
-            return ArrowsUserWideModelSerializer
-        return ArrowsUserModelSerializer
-
+    serializer_class = ArrowsUserModelSerializer

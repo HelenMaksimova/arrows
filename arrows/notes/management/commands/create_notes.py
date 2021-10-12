@@ -20,5 +20,5 @@ class Command(BaseCommand):
                 text=text,
                 created_by_user=user
             )
-            print(f'Note with id {note.id} created')
+            print(f'Note {note} created')
         print('Complete')
