@@ -18,8 +18,9 @@ class Project(models.Model):
     is_active = models.BooleanField(default=True, verbose_name=_('project status'))
 
     class Meta:
-        verbose_name = 'Проект'
-        verbose_name_plural = 'Проекты'
+        verbose_name = _('Project')
+        verbose_name_plural = _('Projects')
+        ordering = ['id']
 
     def __str__(self):
         return f'{self.name}_{self.id}'
@@ -38,8 +39,9 @@ class Note(models.Model):
     is_active = models.BooleanField(default=True, verbose_name=_('note status'))
 
     class Meta:
-        verbose_name = 'Заметка'
-        verbose_name_plural = 'Заметки'
+        verbose_name = _('Note')
+        verbose_name_plural = _('Notes')
+        ordering = ['id']
 
     def __str__(self):
-        return f'Заметка_{self.id}'
+        return f'Note_{self.id}'

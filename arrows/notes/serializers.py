@@ -1,7 +1,5 @@
 from rest_framework import serializers
 from notes.models import Project, Note
-from users.models import ArrowsUser
-from users.serializers import ArrowsUserModelSerializer
 
 
 class ProjectModelSerializer(serializers.ModelSerializer):
